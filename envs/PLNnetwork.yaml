@@ -1,0 +1,4 @@
+channels:
+  - conda-forge
+dependencies:
+  - r-plnmodels == 0.10
