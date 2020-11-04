@@ -1,0 +1,38 @@
+# Load configuration file (.yaml)
+# Default is the test data trichoptera from R package PLNmodels
+configfile: "../config/config.yaml"
+
+rule pln_prepare_data:
+    input:
+        counts=config["counts"],
+        covariates=config["covariates"]
+    output:
+        "results/PLN/prepared_data.RDS"
+    # Optional arguments for `prepare_data()`
+    # Please provide them as python `key=value` pairs
+    #params:
+    #    offset="TSS"
+    log:
+        "results/logs/prepare_data.log"
+    conda:
+        "envs/PLNnetwork.yaml"
+    script:
+        "scripts/prepare_data.R"
+
+rule pln_infer_networks:
+    input:
+        # The formula, as character here, is interpreted by R 
+        "results/PLN/prepared_data.RDS"
+    output:
+        "results/PLN/networks.RDS"
+    # Optional arguments for ``PLNnetwork()``
+    # Please provide them as python ``key=value`` pairs
+    params:
+        formula="Abundance ~ 1 + offset(log(Offset)) + Wind"
+    log:
+        "results/logs/infer_networks.log"
+    conda:
+        "envs/PLNnetwork.yaml"
+    threads: 1 # set desired number of threads here
+    script:
+        "scripts/infer_networks.R"

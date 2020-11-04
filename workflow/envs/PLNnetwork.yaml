@@ -1,4 +1,4 @@
 channels:
   - conda-forge
 dependencies:
-  - r-plnmodels == 0.10
+  - r-plnmodels == 0.10.6

@@ -1,0 +1,2 @@
+counts: "test/abundance_matrix.RDS"
+covariates: "test/covariates.RDS"
