@@ -7,5 +7,5 @@
 ## Visualisation
 
 - [ ] Report in html with snakemake
-- [ ] Set the final plot with r-ggraph env (is in conda-forge)
+- [x] Set the final plot with r-ggraph env (is in conda-forge)
 - [ ] Set an interactive plot in the report? Just like the rule graph (check [hundo](https://github.com/pnnl/hundo)?)

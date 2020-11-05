@@ -2,12 +2,9 @@
 # Default is the test data trichoptera from R package PLNmodels
 configfile: "../config/config.yaml"
 
-def if_stars(wcs):
-""" Check if stability_selection has to be run """
-    if "StARS" in config["criteria"]:
-        return "results/PLN/networks_stars.RDS"
-    else:
-        return "results/PLN/networks.RDS"
+rule all:
+    input:
+        expand("results/PLN/plot_network_{criteria}.png", criteria=config["criteria"])
 
 rule pln_prepare_data:
     input:
@@ -45,3 +42,55 @@ rule pln_infer_networks:
     threads: 1 # set desired number of threads here
     script:
         "scripts/infer_networks.R"
+
+rule pln_stability_selection:
+# Dedicated rule for stability selection to be adapt to threads number
+    input:
+        "results/PLN/networks.RDS"
+    output:
+        models="results/PLN/networks_stars.RDS",
+        plot=report("results/PLN/plot_stars.png",
+         caption="Stability path for network model fits")
+    # Optional arguments for ``stability_selection()``
+    # Please provide them as python ``key=value`` pairs
+    #params:
+    log:
+        "results/logs/stability_selection.log"
+    conda:
+        "envs/PLNnetwork.yaml"
+    threads: 1 # set desired number of threads here
+    script:
+        "scripts/stability_selection.R"
+
+rule pln_pick_network:
+    input:
+        expand("results/PLN/networks{suffix}.RDS",
+                suffix="_stars" if "StARS" in config["criteria"] else "")
+    output:
+        pln="results/PLN/network_{criteria}.RDS",
+        igraph="results/PLN/igraph_{criteria}.RDS"
+    # Optional arguments for ``getBestModel()``
+    # Please provide them as python ``key=value`` pairs
+    #params:
+    #    stability=0.95
+    log:
+        "results/logs/pick_network_{criteria}.log"
+    conda:
+        "envs/PLNnetwork.yaml"
+    threads: 1 # set desired number of threads here
+    script:
+        "scripts/pick_network.R"
+
+rule pln_plot_network:
+    input:
+       "results/PLN/igraph_{criteria}.RDS"
+    output:
+        report("results/PLN/plot_network_{criteria}.png",
+         caption="Network inferred by ``PLNnetwork`` and selected by {criteria}.")
+    log:
+        "results/logs/plot_network_{criteria}.log"
+    conda:
+        "envs/ggraph.yaml"
+    threads: 1 # set desired number of threads here
+    script:
+        "scripts/plot_network.R"

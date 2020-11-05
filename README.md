@@ -33,7 +33,7 @@ Activate the conda environment:
 
 Test your configuration by performing a dry-run via
 
-    snakemake --use-conda -n results/PLN/networks.RDS # WIP the target file will be removed
+    snakemake --use-conda -n
 
 Execute the workflow locally via
 
@@ -42,4 +42,4 @@ Execute the workflow locally via
 If you have previously installed the dependencies (`R` and `PLNmodels`) for this workflow independently or using the following commands, the `--use-conda` is not necessary:
 
     conda create -n PLNmodels r-plnmodels
-    snakemake -n results/PLN/networks.RDS # WIP the target file will be removed
+    snakemake -n
