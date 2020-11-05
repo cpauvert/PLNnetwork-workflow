@@ -39,7 +39,11 @@ if (length(snakemake@params) > 0) {
 data <- do.call(PLNnetwork, args)
 
 # Store the output as RDS file
-saveRDS(data, snakemake@output[[1]], compress = T)
+saveRDS(data, snakemake@output[["models"]], compress = T)
+
+# Write the plot
+library(ggplot2)
+ggsave(snakemake@output[["plot"]], data$plot(), width = 4, height = 3, dpi = 300)
 
 # Proper syntax to close the connection for the log file
 # but could be optional for Snakemake wrapper

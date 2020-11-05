@@ -21,14 +21,16 @@ rule pln_prepare_data:
 
 rule pln_infer_networks:
     input:
-        # The formula, as character here, is interpreted by R 
         "results/PLN/prepared_data.RDS"
     output:
-        "results/PLN/networks.RDS"
+        models="results/PLN/networks.RDS",
+        plot=report("results/PLN/plot_models.png",
+         caption="Criteria evolution for network model fits")
     # Optional arguments for ``PLNnetwork()``
     # Please provide them as python ``key=value`` pairs
     params:
-        formula="Abundance ~ 1 + offset(log(Offset)) + Wind"
+        # The formula, as character here, is interpreted by R
+        formula=config["formula"]
     log:
         "results/logs/infer_networks.log"
     conda:
