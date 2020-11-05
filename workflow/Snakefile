@@ -2,6 +2,13 @@
 # Default is the test data trichoptera from R package PLNmodels
 configfile: "../config/config.yaml"
 
+def if_stars(wcs):
+""" Check if stability_selection has to be run """
+    if "StARS" in config["criteria"]:
+        return "results/PLN/networks_stars.RDS"
+    else:
+        return "results/PLN/networks.RDS"
+
 rule pln_prepare_data:
     input:
         counts=config["counts"],

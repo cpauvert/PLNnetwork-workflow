@@ -1,3 +1,4 @@
 counts: "test/abundance_matrix.RDS"
 covariates: "test/covariates.RDS"
 formula: "Abundance ~ 1 + offset(log(Offset)) + Wind"
+criteria: ["BIC","StARS"]

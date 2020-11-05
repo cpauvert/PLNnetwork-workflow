@@ -1,6 +1,7 @@
 ## Code
 
-- [ ] Ask in config.yaml if stability has to be performed
+- [x] i~~Ask in config.yaml if stability has to be performed.~~ Can be deduced from criteria
+- [ ] Validate the config.yaml to correct for typos in criteria names
 - [ ] Provide custom number of bootstraps (set to 20 by default)
 
 ## Visualisation
