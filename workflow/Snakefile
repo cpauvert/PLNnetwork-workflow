@@ -4,14 +4,14 @@ configfile: "../config/config.yaml"
 
 rule all:
     input:
-        expand("results/PLN/plot_network_{criteria}.png", criteria=config["criteria"])
+        expand("results/PLN/plots/plot_network_{criteria}.png", criteria=config["criteria"])
 
 rule pln_prepare_data:
     input:
         counts=config["counts"],
         covariates=config["covariates"]
     output:
-        "results/PLN/prepared_data.RDS"
+        "results/PLN/RDS/prepared_data.RDS"
     # Optional arguments for `prepare_data()`
     # Please provide them as python `key=value` pairs
     #params:
@@ -25,10 +25,10 @@ rule pln_prepare_data:
 
 rule pln_infer_networks:
     input:
-        "results/PLN/prepared_data.RDS"
+        "results/PLN/RDS/prepared_data.RDS"
     output:
-        models="results/PLN/networks.RDS",
-        plot=report("results/PLN/plot_models.png",
+        models="results/PLN/RDS/networks.RDS",
+        plot=report("results/PLN/plots/plot_models.png",
          caption="Criteria evolution for network model fits")
     # Optional arguments for ``PLNnetwork()``
     # Please provide them as python ``key=value`` pairs
@@ -46,10 +46,10 @@ rule pln_infer_networks:
 rule pln_stability_selection:
 # Dedicated rule for stability selection to be adapt to threads number
     input:
-        "results/PLN/networks.RDS"
+        "results/PLN/RDS/networks.RDS"
     output:
-        models="results/PLN/networks_stars.RDS",
-        plot=report("results/PLN/plot_stars.png",
+        models="results/PLN/RDS/networks_stars.RDS",
+        plot=report("results/PLN/plots/plot_stars.png",
          caption="Stability path for network model fits")
     # Optional arguments for ``stability_selection()``
     # Please provide them as python ``key=value`` pairs
@@ -64,11 +64,11 @@ rule pln_stability_selection:
 
 rule pln_pick_network:
     input:
-        expand("results/PLN/networks{suffix}.RDS",
+        expand("results/PLN/RDS/networks{suffix}.RDS",
                 suffix="_stars" if "StARS" in config["criteria"] else "")
     output:
-        pln="results/PLN/network_{criteria}.RDS",
-        igraph="results/PLN/igraph_{criteria}.RDS"
+        pln="results/PLN/RDS/network_{criteria}.RDS",
+        igraph="results/PLN/RDS/igraph_{criteria}.RDS"
     # Optional arguments for ``getBestModel()``
     # Please provide them as python ``key=value`` pairs
     #params:
@@ -83,9 +83,9 @@ rule pln_pick_network:
 
 rule pln_plot_network:
     input:
-       "results/PLN/igraph_{criteria}.RDS"
+       "results/PLN/RDS/igraph_{criteria}.RDS"
     output:
-        report("results/PLN/plot_network_{criteria}.png",
+        report("results/PLN/plots/plot_network_{criteria}.png",
          caption="Network inferred by ``PLNnetwork`` and selected by {criteria}.")
     log:
         "results/logs/plot_network_{criteria}.log"
