@@ -15,7 +15,7 @@ The organisation of this workflow was adapted from the template of [snakemake wo
 
 ### Step 2: Configure workflow
 
-Configure the workflow according to your needs via editing the `config.yaml` file in the `config/` folder.
+Configure the workflow according to your needs via editing the `config.yaml` file in the `config/` folder. The default configuration runs with a toy dataset which is a subset of the example used in the R package [PLNmodels](https://github.com/jchiquet/PLNmodels).
 
 ### Step 3: Install Snakemake
 
@@ -37,9 +37,17 @@ Test your configuration by performing a dry-run via
 
 Execute the workflow locally via
 
-    snakemake --use-conda --cores $N results/PLN/networks.RDS # WIP the target file will be removed
+    snakemake --use-conda --cores $N 
 
 If you have previously installed the dependencies (`R` and `PLNmodels`) for this workflow independently or using the following commands, the `--use-conda` is not necessary:
 
     conda create -n PLNmodels r-plnmodels
-    snakemake -n
+    snakemake -n --cores $N 
+
+### Step 5: Visualise an automatic report of the results
+
+Snakemake has built-in capabilities of reporting the results of the workflow. To do so, you can execute the following line:
+
+    snakemake --report report.html
+
+

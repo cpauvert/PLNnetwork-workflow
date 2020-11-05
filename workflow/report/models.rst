@@ -1,0 +1,1 @@
+Criteria evolution for network model fits. "BIC and its extended-version high-dimensional version EBIC are classically used for selecting the correct amount of penalization with sparse estimator like the one used by PLN-network" (Source: `vignette <http://julien.cremeriefamily.info/PLNmodels/articles/PLNnetwork.html#exploring-the-path-of-networks>_`).

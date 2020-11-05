@@ -29,7 +29,7 @@ rule pln_infer_networks:
     output:
         models="results/PLN/RDS/networks.RDS",
         plot=report("results/PLN/plots/plot_models.png",
-         caption="Criteria evolution for network model fits")
+         caption="report/models.rst", category="Fit network models")
     # Optional arguments for ``PLNnetwork()``
     # Please provide them as python ``key=value`` pairs
     params:
@@ -50,7 +50,7 @@ rule pln_stability_selection:
     output:
         models="results/PLN/RDS/networks_stars.RDS",
         plot=report("results/PLN/plots/plot_stars.png",
-         caption="Stability path for network model fits")
+         caption="report/stars.rst", category="StARS network selection")
     # Optional arguments for ``stability_selection()``
     # Please provide them as python ``key=value`` pairs
     #params:
@@ -86,7 +86,7 @@ rule pln_plot_network:
        "results/PLN/RDS/igraph_{criteria}.RDS"
     output:
         report("results/PLN/plots/plot_network_{criteria}.png",
-         caption="Network inferred by ``PLNnetwork`` and selected by {criteria}.")
+         caption="report/network.rst", category="Plot network", subcategory="{criteria}")
     log:
         "results/logs/plot_network_{criteria}.log"
     conda:

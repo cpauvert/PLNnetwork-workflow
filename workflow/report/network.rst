@@ -1,0 +1,1 @@
+Network inferred by ``PLNnetwork`` and selected using the {{ snakemake.wildcards.criteria }} criteria. Black labels represent the network nodes. The edge color between the labels indicate the positive or negative sign of the partial correlation inferred by ``PLNnetwork`` with blue or red respectively.
