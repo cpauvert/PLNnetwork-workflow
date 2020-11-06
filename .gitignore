@@ -1,0 +1,4 @@
+.snakemake
+workflow/results
+workflow/.RData
+workflow/report.html
