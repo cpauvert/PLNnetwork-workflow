@@ -1,10 +1,13 @@
-# Load configuration file (.yaml)
-# Default is the test data trichoptera from R package PLNmodels
-configfile: "../config/config.yaml"
+# __author__ = "Charlie Pauvert"
+# __copyright__ = "Copyright 2020, Charlie Pauvert"
+# __license__ = "MIT"
+
+include: "rules/common.smk"
 
 rule all:
     input:
         expand("results/PLN/plots/plot_network_{criteria}.png", criteria=config["criteria"])
+
 
 rule pln_prepare_data:
     input:
@@ -53,7 +56,8 @@ rule pln_stability_selection:
          caption="report/stars.rst", category="StARS network selection")
     # Optional arguments for ``stability_selection()``
     # Please provide them as python ``key=value`` pairs
-    #params:
+    params:
+        stability=config["stability"]
     log:
         "results/logs/stability_selection.log"
     conda:

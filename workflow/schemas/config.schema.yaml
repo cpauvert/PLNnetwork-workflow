@@ -1,0 +1,45 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+# Further docs at https://json-schema.org/understanding-json-schema/reference/
+description: snakemake configuration file
+
+type: object
+
+# possible entries of the config file and which type they should be
+properties:
+  counts:
+    type: string
+  covariates:
+    type: string
+  formula:
+    type: string
+  stability:
+    type: number
+    minimum: 0
+    maximum: 1
+oneOf:
+- properties:
+    criteria:
+      type: array
+      items:
+        enum:
+        - BIC
+        - loglik
+        - R_squared
+        - EBIC
+        - StARS
+- properties:
+    criteria:
+      type: string
+      enum:
+      - BIC
+      - loglik
+      - R_squared
+      - EBIC
+      - StARS
+
+# entries that have to be in the config file for successful validation
+required:
+  - counts
+  - covariates
+  - formula
+  - criteria
