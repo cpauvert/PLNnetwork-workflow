@@ -32,7 +32,8 @@ rule pln_infer_networks:
     output:
         models="results/PLN/RDS/networks.RDS",
         plot=report("results/PLN/plots/plot_models.png",
-         caption="report/models.rst", category="Fit network models")
+         caption="report/models.rst", category="Fit network models"),
+        table="results/PLN/RDS/table_models.RDS"
     # Optional arguments for ``PLNnetwork()``
     # Please provide them as python ``key=value`` pairs
     params:
@@ -98,3 +99,17 @@ rule pln_plot_network:
     threads: 1 # set desired number of threads here
     script:
         "scripts/plot_network.R"
+
+rule report_pln:
+    input:
+        table_models="results/PLN/RDS/table_models.RDS",
+        network=expand("results/PLN/RDS/igraph_{criteria}.RDS", criteria=config["criteria"])
+    output:
+        "results/report_PLNnetwork.html"
+    log:
+        "results/logs/report.log"
+    conda:
+        "envs/report.yaml"
+    threads: 1 # set desired number of threads here
+    script:
+        "report/report_PLNnetwork.Rmd"

@@ -1,0 +1,78 @@
+---
+title: "PLNnetwork interactive report"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+  rmd: "report_PLNnetwork.Rmd"
+output:
+  html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: simplex
+    fig_width: 7
+    fig_height: 5
+    fig_caption: true
+    fig_align: center
+    toc: yes
+    toc_float:
+        collapsed: no
+        smooth_scroll: yes
+---
+
+```{r packages}
+library(ggplot2)
+library(DT)
+```
+
+# Fit network models
+
+## Models metrics table
+
+```{r tab_models, fig.cap="Criteria evolution for network model fits. BIC and its extended-version high-dimensional version EBIC are classically used for selecting the correct amount of penalization with sparse estimator like the one used by PLN-network (Source: [vignette](http://julien.cremeriefamily.info/PLNmodels/articles/PLNnetwork.html#exploring-the-path-of-networks))."}
+tmodels<-readRDS(snakemake@input[["table_models"]])
+datatable(tmodels) %>%
+    formatRound(~loglik+BIC+ICL+EBIC+pen_loglik, digits = 0, mark = "") %>%
+    formatRound(~param+R_squared+density+stability, digits = 3, mark = "")
+```
+
+# Plot network selection
+
+```{r net_libraries }
+library(igraph)
+library(visNetwork)
+interactive_net <- function(g) {
+    data <- toVisNetworkData(g)
+    data$edges$title <- paste0("<p>Weight: ", data$edges$weight, "</p>")
+    visNetwork(nodes = data$nodes, edges = data$edges, height = "500px") %>%
+        visIgraphLayout(layout = "layout_in_circle") %>%
+        visOptions(highlightNearest = list(enabled = T, hover = T))
+}
+```
+
+The network were inferred using the following formula:
+
+
+```
+`r snakemake@config[["formula"]]`
+```
+
+`r if(!"BIC" %in% snakemake@config[["criteria"]]) {"<!--"}`
+
+## BIC criteria
+
+```{r bic, fig.caption="Network inferred by ``PLNnetwork`` and selected using the BIC criteria."}
+netBIC<-readRDS(grep("BIC", snakemake@input[["network"]], value=T))
+interactive_net(netBIC)
+```
+
+`r if(!"BIC" %in% snakemake@config[["criteria"]]) {"-->"}`
+
+`r if(!"StARS" %in% snakemake@config[["criteria"]]) {"<!--"}`
+
+## StARS criteria
+
+```{r stars, fig.caption="Network inferred by ``PLNnetwork`` and selected using the StARS criteria."}
+netStARS<-readRDS(grep("StARS", snakemake@input[["network"]], value=T))
+interactive_net(netStARS)
+```
+
+`r if(!"StARS" %in% snakemake@config[["criteria"]]) {"-->"}`

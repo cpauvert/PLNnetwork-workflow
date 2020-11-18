@@ -44,6 +44,7 @@ saveRDS(data, snakemake@output[["models"]], compress = T)
 # Write the plot
 library(ggplot2)
 ggsave(snakemake@output[["plot"]], data$plot(), width = 4, height = 3, dpi = 300)
+saveRDS(data$criteria, snakemake@output[["table"]], compress = T)
 
 # Proper syntax to close the connection for the log file
 # but could be optional for Snakemake wrapper
