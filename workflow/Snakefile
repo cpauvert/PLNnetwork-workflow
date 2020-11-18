@@ -57,8 +57,7 @@ rule pln_stability_selection:
          caption="report/stars.rst", category="StARS network selection")
     # Optional arguments for ``stability_selection()``
     # Please provide them as python ``key=value`` pairs
-    params:
-        stability=config["stability"]
+    #params:
     log:
         "results/logs/stability_selection.log"
     conda:
@@ -76,8 +75,8 @@ rule pln_pick_network:
         igraph="results/PLN/RDS/igraph_{criteria}.RDS"
     # Optional arguments for ``getBestModel()``
     # Please provide them as python ``key=value`` pairs
-    #params:
-    #    stability=0.95
+    params:
+        stability=config["stability"] if "StARS" in config["criteria"] else ""
     log:
         "results/logs/pick_network_{criteria}.log"
     conda:

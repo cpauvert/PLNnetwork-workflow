@@ -38,7 +38,11 @@ saveRDS(models, snakemake@output[["models"]], compress = T)
 
 # Save the stability path plot
 library(ggplot2)
-ggsave(snakemake@output[["plot"]], models$plot_stars(), width = 4, height = 3, dpi = 300)
+ggsave(
+   snakemake@output[["plot"]],
+   models$plot_stars(stability = snakemake@config[["stability"]]),
+   width = 4, height = 3, dpi = 300
+)
 
 # Proper syntax to close the connection for the log file
 # but could be optional for Snakemake wrapper
