@@ -12,9 +12,17 @@ library(PLNmodels)
 
 # Prepare arguments (no matter the order)
 args <- snakemake@input[names(snakemake@input) != ""]
+save.image()
 
-# Read RDS files
-args <- sapply(args, readRDS)
+# Detect the filetype and read the corresponding input
+args <- lapply(args, function(foo) {
+  ext <- substr(foo, nchar(foo) - 2, nchar(foo)) # Extract suffix
+  switch(ext,
+    "RDS" = readRDS(foo),
+    "csv" = read.csv(foo, row.names = 1),
+    "tsv" = read.delim(foo)
+  )
+})
 
 # Check if extra params are passed
 if (length(snakemake@params) > 0) {

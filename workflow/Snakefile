@@ -17,8 +17,8 @@ rule pln_prepare_data:
         "results/PLN/RDS/prepared_data.RDS"
     # Optional arguments for `prepare_data()`
     # Please provide them as python `key=value` pairs
-    #params:
-    #    offset="TSS"
+    params:
+        offset="none"
     log:
         "results/logs/prepare_data.log"
     conda:

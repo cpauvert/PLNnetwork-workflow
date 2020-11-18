@@ -8,10 +8,13 @@ type: object
 properties:
   counts:
     type: string
+    pattern: "RDS$|csv$|tsv$"
   covariates:
     type: string
+    pattern: "RDS$|csv$|tsv$"
   formula:
     type: string
+    pattern: "~"
   stability:
     type: number
     minimum: 0
