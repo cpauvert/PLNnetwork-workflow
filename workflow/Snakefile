@@ -6,7 +6,8 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("results/PLN/plots/plot_network_{criteria}.png", criteria=config["criteria"])
+        expand("results/PLN/plots/plot_network_{criteria}.png", criteria=config["criteria"]),
+        "results/report_PLNnetwork.html"
 
 
 rule pln_prepare_data:
@@ -17,8 +18,8 @@ rule pln_prepare_data:
         "results/PLN/RDS/prepared_data.RDS"
     # Optional arguments for `prepare_data()`
     # Please provide them as python `key=value` pairs
-    params:
-        offset="none"
+    #params:
+    #    offset="none"
     log:
         "results/logs/prepare_data.log"
     conda:

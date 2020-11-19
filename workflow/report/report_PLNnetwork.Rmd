@@ -19,7 +19,6 @@ output:
 ---
 
 ```{r packages}
-library(ggplot2)
 library(DT)
 ```
 
